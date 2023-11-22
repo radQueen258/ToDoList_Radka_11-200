@@ -1,0 +1,10 @@
+22 of November, I finished the registration and login stuff
+I wrote the necessary for collecting the task information
+I wtote the necessary for displaying my tasks lists.
+
+--------------ERROR-----------------------
+- I am not able to save the task in the database because the date keeps poping as null
+-After that it says that the user_id foreign key is null so I can't save it.
+
+----------------------------------------------
+Trying to add the functionality of showing tasks according to the user

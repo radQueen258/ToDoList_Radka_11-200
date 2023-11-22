@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -13,6 +13,7 @@ import java.util.Date;
 @Builder
 public class Task {
     private long TaskId;
+    private long UserId;
     private String TaskName;
     private String TaskDescription;
     private Date TaskDeadline;

@@ -53,20 +53,26 @@ public class TaskServlet extends HttpServlet {
         String TaskDescription = request.getParameter("description");
         String TaskDeadline1 = request.getParameter("deadline");
 
-        java.sql.Date TaskDeadline = null;
-        try {
-            SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd-MM-yy");
-            java.util.Date parsedDate = inputDateFormat.parse(TaskDeadline1);
-            TaskDeadline = new java.sql.Date(parsedDate.getTime());
-        } catch (ParseException e) {
-            // Handle parsing exception if the input date format is incorrect
-            e.printStackTrace(); // Or log an error message
-        }
+        System.out.println(TaskDeadline1);
+
+        java.sql.Date TaskDeadline2 = null;
+
+
+            try {
+                SimpleDateFormat inputDateFormat = new SimpleDateFormat("MM-dd-yy");
+                java.util.Date parsedDate = inputDateFormat.parse(TaskDeadline1);
+                if (parsedDate != null) {
+                    TaskDeadline2 = new java.sql.Date(parsedDate.getTime());
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
 
         Task task = Task.builder()
                 .TaskName(TaskName)
                 .TaskDescription(TaskDescription)
-                .TaskDeadline(TaskDeadline)
+                .TaskDeadline(TaskDeadline2)
                 .build();
 
 
