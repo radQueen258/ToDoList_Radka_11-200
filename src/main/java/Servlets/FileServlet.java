@@ -9,8 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.*;
 
-@WebServlet("files")
-@MultipartConfig
+@WebServlet("/files")
 public class FileServlet extends HttpServlet {
 
     @Override

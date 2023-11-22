@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-@WebServlet("users")
+@WebServlet("/users")
 public class UserServlet extends HttpServlet {
 
     private static final String DB_USER = "postgres";

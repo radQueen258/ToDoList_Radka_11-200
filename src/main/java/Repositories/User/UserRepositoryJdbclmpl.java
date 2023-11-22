@@ -14,7 +14,7 @@ public class UserRepositoryJdbclmpl implements UserRepository{
     private Connection connection;
     private Statement statement;
 
-    private static final String SQL_SELECT_FROM_DRIVER = "select user_id, email, password, nickname, registration_date, email_verified from Users";
+    private static final String SQL_SELECT_FROM_DRIVER = "select user_id, email, password, nickname, registration_date from Users";
 
     public UserRepositoryJdbclmpl (Connection connection, Statement statement) {
         this.connection = connection;
@@ -35,7 +35,7 @@ public class UserRepositoryJdbclmpl implements UserRepository{
                         .UserPassword(resultSet.getString("password"))
                         .UserNickname(resultSet.getString("nickname"))
                         .UserRegistration(resultSet.getDate("registration_date"))
-                        .UserEmailVerification(resultSet.getBoolean("email_verified"))
+//                        .UserEmailVerification(resultSet.getBoolean("email_verified"))
                         .build();
 
                 result.add(user);

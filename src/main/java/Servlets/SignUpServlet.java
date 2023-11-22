@@ -40,7 +40,7 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("write the path fot the sign up page").forward(request, response);
+        request.getRequestDispatcher("/html/SignUpPage.html").forward(request, response);
     }
 
     @Override

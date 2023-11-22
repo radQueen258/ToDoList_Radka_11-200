@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class AccountRepositoryJdbclmpl implements AccountRepository{
 
     private final Connection connection;
-    private static final String SQL_INSERT ="insert into Users(email, nickname, password, registration_date, email_verified) values";
+    private static final String SQL_INSERT ="insert into users(email, nickname, password, registration_date) values";
 
     public AccountRepositoryJdbclmpl(Connection connection) {
         this.connection = connection;
@@ -18,13 +18,13 @@ public class AccountRepositoryJdbclmpl implements AccountRepository{
     @Override
     public void save(User user) throws SQLException {
 
-        String sql = SQL_INSERT + "(?,?,?,?,?)";
+        String sql = SQL_INSERT + "(?,?,?, CURRENT_DATE)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, user.getUserEmail());
         preparedStatement.setString(2, user.getUserNickname());
         preparedStatement.setString(3, user.getUserPassword());
-        preparedStatement.setDate(4, user.getUserRegistration());
-        preparedStatement.setBoolean(5, user.getUserEmailVerification());
+//        preparedStatement.setDate(4, user.getUserRegistration());
+//        preparedStatement.setBoolean(5, user.getUserEmailVerification());
 
         preparedStatement.executeUpdate();
         System.out.println("Executed");

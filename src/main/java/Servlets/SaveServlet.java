@@ -12,7 +12,7 @@ public class SaveServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("the path for the save notification page").forward(request, response);
+        request.getRequestDispatcher("/html/saved.html").forward(request, response);
     }
 
     @Override
