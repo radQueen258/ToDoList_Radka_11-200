@@ -1,30 +1,68 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>New Task</title>-->
+<!--  <link rel="stylesheet" type="text/css" href="/css/CreateTask.css">-->
+<!--</head>-->
+<!--<body>-->
+<!--<form action="/task" method="post" enctype="multipart/form-data">-->
+<!--<div class="task-details">-->
+<!--  <h2>Task Details</h2>-->
+
+<!--    <label >Task Name:</label>-->
+<!--    <input type="text" id="taskName" placeholder="Task Name" name="task_name" required>-->
+
+<!--    <label for="taskDescription">Task Description:</label>-->
+<!--    <textarea id="taskDescription" placeholder="Your Task Description" name="description" rows="4" required></textarea>-->
+
+<!--    <label for="taskDeadline">Deadline:</label>-->
+<!--    <input type="date" id="taskDeadline" name="deadline" required>-->
+
+<!--    <label for="fileUpload">Upload File:</label>-->
+<!--    <input type="file" id="fileUpload" name="fileUpload">-->
+
+<!--    <input type="submit" value="Submit Task">-->
+
+<!--</div>-->
+<!--</form>-->
+<!--</body>-->
+<!--</html>-->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>New Task</title>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Create Task</title>
   <link rel="stylesheet" type="text/css" href="/css/CreateTask.css">
 </head>
 <body>
 
-<div class="task-details">
-  <h2>Task Details</h2>
-  <form action="/task" method="post" enctype="multipart/form-data">
-    <label for="taskName">Task Name:</label>
-    <input type="text" id="taskName" name="task_Name" required>
+<form action="/task" method="post" >
+  <div class="task-details">
+    <h1>New Task</h1>
+    <hr>
 
-    <label for="taskDescription">Task Description:</label>
-    <textarea id="taskDescription" name="description" rows="4" required></textarea>
+        <label >Task Name:</label>
+        <input type="text" id="taskName" placeholder="Task Name" name="task_name" required>
 
-    <label for="taskDeadline">Deadline:</label>
-    <input type="date" id="taskDeadline" name="deadline" required>
+        <label for="taskDescription">Task Description:</label>
+        <textarea id="taskDescription" placeholder="Your Task Description" name="description" rows="4" required></textarea>
 
-    <label for="fileUpload">Upload File:</label>
-    <input type="file" id="fileUpload" name="fileUpload">
+        <label for="taskDeadline">Deadline:</label>
+        <input type="date" id="taskDeadline" name="deadline" required>
 
-    <input type="submit" value="Submit Task">
-  </form>
-</div>
+        <label for="fileUpload">Upload File:</label>
+        <input type="file" id="fileUpload" name="fileUpload">
+
+      <input type="submit" value="Submit Task">
+
+  </div>
+</form>
 
 </body>
 </html>

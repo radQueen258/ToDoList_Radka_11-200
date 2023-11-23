@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
@@ -45,6 +46,18 @@ public class TaskServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/html/CreateTask.html").forward(request,response);
+
+
+    }
+
+    public long getUserIDFromCurrentUser(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("userId") != null) {
+            return (long) session.getAttribute("userId");
+        } else {
+            // Handle the case where the user is not logged in or the user ID is not in the session
+            return -1; // Or return any default value indicating no user ID
+        }
     }
 
     @Override
@@ -52,27 +65,33 @@ public class TaskServlet extends HttpServlet {
         String TaskName = request.getParameter("task_name");
         String TaskDescription = request.getParameter("description");
         String TaskDeadline1 = request.getParameter("deadline");
+        long TaskUserId = getUserIDFromCurrentUser(request);
+
 
         System.out.println(TaskDeadline1);
+        System.out.println(TaskName);
+        System.out.println(TaskDescription);
+        System.out.println(TaskUserId);
 
-        java.sql.Date TaskDeadline2 = null;
-
-
-            try {
-                SimpleDateFormat inputDateFormat = new SimpleDateFormat("MM-dd-yy");
-                java.util.Date parsedDate = inputDateFormat.parse(TaskDeadline1);
-                if (parsedDate != null) {
-                    TaskDeadline2 = new java.sql.Date(parsedDate.getTime());
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+//        java.sql.Date TaskDeadline2 = null;
+//
+//
+//            try {
+//                SimpleDateFormat inputDateFormat = new SimpleDateFormat("MM-dd-yy");
+//                java.util.Date parsedDate = inputDateFormat.parse(TaskDeadline1);
+//                if (parsedDate != null) {
+//                    TaskDeadline2 = new java.sql.Date(parsedDate.getTime());
+//                }
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
 
 
         Task task = Task.builder()
+                .UserId(TaskUserId)
                 .TaskName(TaskName)
                 .TaskDescription(TaskDescription)
-                .TaskDeadline(TaskDeadline2)
+                .TaskDeadline(Date.valueOf(TaskDeadline1))
                 .build();
 
 

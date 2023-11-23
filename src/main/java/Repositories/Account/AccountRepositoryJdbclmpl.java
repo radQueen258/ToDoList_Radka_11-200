@@ -2,6 +2,9 @@ package Repositories.Account;
 
 import Models.User;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,27 +35,36 @@ public class AccountRepositoryJdbclmpl implements AccountRepository{
     }
 
     @Override
-    public boolean login(String email, String password, User user) throws SQLException {
+    public boolean login(String email, String password, User user, HttpServletRequest request) throws SQLException {
 
-        String sql = "SELECT * FROM Users WHERE email = ?";
+        String sql = "SELECT user_id, email, password FROM Users WHERE email = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, user.getUserEmail());
         ResultSet resultSet = preparedStatement.executeQuery();
 
         String userAcc = "";
         String passAcc = "";
+        long userId = -1;
 
         while (resultSet.next()) {
             userAcc = resultSet.getString("email");
             passAcc = resultSet.getString("password");
+            userId = resultSet.getLong("user_id");
             System.out.println("Retrieved username: " + userAcc);
             System.out.println("Retrieved password: " + passAcc);
         }
 
+
         if(userAcc != null && passAcc != null && userAcc.equals(email) && passAcc.equals(password)){
+           HttpSession session = request.getSession();
+           session.setAttribute("userId", userId);
+            System.out.println(userId);
             return true;
         }else {
+
             return false;
         }
+
+
     }
 }

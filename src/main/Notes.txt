@@ -8,3 +8,7 @@ I wtote the necessary for displaying my tasks lists.
 
 ----------------------------------------------
 Trying to add the functionality of showing tasks according to the user
+---------------------UPDATE 23.11.23---------------------------
+
+Now I am able to create tasks with no issues
+But unfortunately can not show the tasks according to the user.

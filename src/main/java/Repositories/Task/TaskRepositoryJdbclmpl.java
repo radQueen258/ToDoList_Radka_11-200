@@ -11,20 +11,29 @@ public class TaskRepositoryJdbclmpl implements TaskRepository {
     private Connection connection;
     private Statement statement;
 
-    private static final String SQL_INSERT = "insert into tasks(task_name, description, deadline) values";
+    private static final String SQL_INSERT = "insert into tasks(user_id,task_name, description, deadline) values";
 
     public TaskRepositoryJdbclmpl(Connection connection) {
         this.connection = connection;
     }
 
+    public TaskRepositoryJdbclmpl(Statement statement) {
+        this.statement = statement;
+    }
+
+    public TaskRepositoryJdbclmpl(Connection connection, Statement statement) {
+        this.connection = connection;
+        this.statement = statement;
+    }
 
     @Override
     public void saveTask(Task task) throws SQLException {
-        String sql = SQL_INSERT + "(?,?,?)";
+        String sql = SQL_INSERT + "(?,?,?,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1, task.getTaskName());
-        preparedStatement.setString(2, task.getTaskDescription());
-        preparedStatement.setDate(3, task.getTaskDeadline());
+        preparedStatement.setLong(1,task.getUserId());
+        preparedStatement.setString(2, task.getTaskName());
+        preparedStatement.setString(3, task.getTaskDescription());
+        preparedStatement.setDate(4, task.getTaskDeadline());
 
         preparedStatement.executeUpdate();
         System.out.println("Task Executed");
@@ -36,10 +45,11 @@ public class TaskRepositoryJdbclmpl implements TaskRepository {
         String SQL_SELECT =  "select * from tasks where user_id = ?";
 
         try {
-//            Statement statement1 = connection.createStatement();
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT);
-            preparedStatement.setLong(1,userId);
-            ResultSet resultSet = preparedStatement.executeQuery();
+           Statement statement1 = connection.createStatement();
+//            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT);
+//            preparedStatement.setLong(1,userId);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT);
 
             List<Task> userTasks = new ArrayList<>();
 

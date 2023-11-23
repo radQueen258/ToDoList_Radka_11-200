@@ -55,7 +55,7 @@ public class LoginServlet extends HttpServlet {
                 .build();
 
         try {
-            if(accountRepository.login(accountUserEmail, accountUserPassword, user)) {
+            if(accountRepository.login(accountUserEmail, accountUserPassword, user, request)) {
                 response.sendRedirect("/home");
             }else {
                 response.sendRedirect("/login?error=1");

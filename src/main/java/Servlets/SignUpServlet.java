@@ -48,6 +48,8 @@ public class SignUpServlet extends HttpServlet {
         String accountUserEmail = request.getParameter("email");
         String accountUserPass = request.getParameter("password");
         String accountUserNickname = request.getParameter("nickname");
+        System.out.println(accountUserEmail);
+        System.out.println(accountUserNickname);
 
         User user = User.builder()
                 .UserEmail(accountUserEmail)
