@@ -8,4 +8,6 @@ import java.util.List;
 public interface TaskRepository {
     void saveTask (Task task) throws SQLException;
     List findByUser(long userId);
+
+//    List findAll();
 }

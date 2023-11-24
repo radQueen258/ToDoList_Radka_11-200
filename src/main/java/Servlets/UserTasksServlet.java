@@ -48,9 +48,15 @@ public class UserTasksServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         long userId = (long) session.getAttribute("userId");
+
         List userTasks;
         try {
             userTasks = taskRepository.findByUser(userId);
+//            System.out.println("Printing user tasks:");
+//            for (Object task : userTasks) {
+//                System.out.println(task); // Assuming task.toString() provides meaningful information
+//            }
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

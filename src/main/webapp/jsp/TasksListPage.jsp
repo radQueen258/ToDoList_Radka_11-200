@@ -1,9 +1,10 @@
 <%@ page import="java.util.List" %>
 <%@ page import="Models.Task" %>
+<%@ page import="Models.User" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<!DOCTYPE html>
 <html>
 <head>
     <title>Tasks</title>
@@ -13,10 +14,12 @@
     <table>
         <tr>
            <th >User Nickname</th>
+            <th >Task ID</th>
            <th >Task</th>
-            <th >Priority</th>
-             <th >Actions</th>
+            <th >Description</th>
+             <th >Deadline</th>
         </tr>
+            <td>${user.nickname}</td>
             <c:forEach items="${taskJsp}" var="task">--%>
                 <tr>
                     <td>${task.task_id}</td>

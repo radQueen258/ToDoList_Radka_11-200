@@ -1,6 +1,7 @@
 package Repositories.Account;
 
 import Models.User;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,7 +56,7 @@ public class AccountRepositoryJdbclmpl implements AccountRepository{
         }
 
 
-        if(userAcc != null && passAcc != null && userAcc.equals(email) && passAcc.equals(password)){
+        if(userAcc != null && passAcc != null && BCrypt.checkpw(password, passAcc)){
            HttpSession session = request.getSession();
            session.setAttribute("userId", userId);
             System.out.println(userId);

@@ -3,6 +3,7 @@ package Servlets;
 import Models.User;
 import Repositories.Account.AccountRepository;
 import Repositories.Account.AccountRepositoryJdbclmpl;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,17 +44,23 @@ public class SignUpServlet extends HttpServlet {
         request.getRequestDispatcher("/html/SignUpPage.html").forward(request, response);
     }
 
+    public static String hashPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accountUserEmail = request.getParameter("email");
         String accountUserPass = request.getParameter("password");
         String accountUserNickname = request.getParameter("nickname");
-        System.out.println(accountUserEmail);
-        System.out.println(accountUserNickname);
+//        System.out.println(accountUserEmail);
+//        System.out.println(accountUserNickname);
+       String hashedPassword =  hashPassword(accountUserPass);
+
 
         User user = User.builder()
                 .UserEmail(accountUserEmail)
-                .UserPassword(accountUserPass)
+                .UserPassword(hashedPassword)
                 .UserNickname(accountUserNickname)
                 .build();
 
