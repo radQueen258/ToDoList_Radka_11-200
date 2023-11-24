@@ -1,6 +1,7 @@
 package Repositories.Account;
 
 import Models.User;
+import Repositories.Config.UserRoleRepository;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,15 +11,34 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
-public class AccountRepositoryJdbclmpl implements AccountRepository{
+public class AccountRepositoryJdbclmpl extends UserRoleRepository implements AccountRepository {
 
     private final Connection connection;
     private static final String SQL_INSERT ="insert into users(email, nickname, password, registration_date) values";
 
     public AccountRepositoryJdbclmpl(Connection connection) {
+        super();
         this.connection = connection;
     }
+
+
+    @Override
+    public long getDefaultUserRoleID() throws SQLException {
+        String roleQuery = "select role_id from roles where role_name = 'USER' ";
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(roleQuery)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getLong("role_id");
+                }
+            }
+        }
+
+        throw new SQLException("Default user role 'USER' not found.");
+    }
+
     @Override
     public void save(User user) throws SQLException {
 
@@ -31,14 +51,24 @@ public class AccountRepositoryJdbclmpl implements AccountRepository{
 //        preparedStatement.setBoolean(5, user.getUserEmailVerification());
 
         preparedStatement.executeUpdate();
-        System.out.println("Executed");
+        ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+
+        if (generatedKeys.next()) {
+            long userId = generatedKeys.getLong(1);
+            long userRoleId = getDefaultUserRoleID();
+
+            assignRoleToUser(userId, userRoleId);
+
+        } else {
+            throw new SQLException("User creation failed no ID obtained.");
+        }
 
     }
 
     @Override
     public boolean login(String email, String password, User user, HttpServletRequest request) throws SQLException {
 
-        String sql = "SELECT user_id, email, password FROM Users WHERE email = ?";
+        String sql = "SELECT user_id, email, password FROM users WHERE email = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, user.getUserEmail());
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -59,13 +89,15 @@ public class AccountRepositoryJdbclmpl implements AccountRepository{
         if(userAcc != null && passAcc != null && BCrypt.checkpw(password, passAcc)){
            HttpSession session = request.getSession();
            session.setAttribute("userId", userId);
-            System.out.println(userId);
-            return true;
-        }else {
 
-            return false;
+            List<String> userRoles = getUserRole(userId);
+
+            if (userRoles != null && !userRoles.isEmpty()) {
+                session.setAttribute("userRoles", userRoles);
+                return true;
+            }
+
         }
-
-
+        return  false;
     }
 }
