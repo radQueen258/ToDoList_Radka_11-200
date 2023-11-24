@@ -15,3 +15,6 @@ But unfortunately can not show the tasks according to the user.
 
 ----------------UPDATE 24.22.23--------------
 Now I am storing hashed passwords in my database and am able to log in using them
+
+I tried to implement the Role Based Authentication using Spring Boot Security, now the webpage is running
+but I am not able to access the registration page. I shall solve it tomorrow.

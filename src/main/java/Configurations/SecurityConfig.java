@@ -1,6 +1,9 @@
 package Configurations;
 
+import Filters.AuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import javax.servlet.Filter;
 import javax.sql.DataSource;
 
 @Configuration
@@ -30,20 +34,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "WHERE u.email=?");
     }
 
+    @Bean
+    public FilterRegistrationBean<Filter> myFilter() {
+        FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
+        filterRegistrationBean.setFilter(new AuthFilter());
+        filterRegistrationBean.addUrlPatterns("/*");
+        return filterRegistrationBean;
+    }
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers("/signUp","/SignUpPage").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/css/**","/js/**","/images/**").permitAll()
+                .antMatchers("/", "/index.jsp").permitAll()
                 .anyRequest().authenticated()
                 .and()
               .formLogin()
-                .loginPage("/html/LoginPage.html")
+                .loginPage("/login")
                 .permitAll()
                 .and()
               .logout()
                 .permitAll();
 
     }
+
+
 }
