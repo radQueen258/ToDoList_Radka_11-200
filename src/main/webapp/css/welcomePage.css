@@ -1,47 +1,38 @@
+
 body {
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    font-family: 'Arial', sans-serif;
-    background-color: #fff; /* Set the background color */
+    background-color: #f7f7f7;
 }
 
 .welcome-container {
-    width: 100%;
-    max-width: 600px;
-    margin: 100px auto;
     text-align: center;
+    margin-top: 50px;
 }
 
 .welcome-header {
-    background-color: #ffc0cb; /* Set the pink background color */
-    padding: 20px;
-    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
-.welcome-header h1 {
-    color: #fff; /* Set text color to white */
+.navbar {
+    background-color: pink;
+    padding: 15px;
 }
 
-.welcome-header p {
-    color: #fff; /* Set text color to white */
-    margin-top: 10px;
-}
-
-.logout-btn-container {
-    margin-top: 30px;
-}
-
-.logout-btn {
-    display: inline-block;
-    padding: 10px 20px;
+.navbar a {
+    color: white;
     text-decoration: none;
-    color: #fff; /* Set text color to white */
-    background-color: #ff69b4; /* Set button color to a shade of pink */
-    border-radius: 5px;
-    margin: 0 10px;
-    transition: background-color 0.3s ease;
+    margin: 0 15px;
+    font-size: 18px;
 }
 
-.logout-btn:hover {
-    background-color: #e05294; /* Change button color on hover */
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+.quote {
+    margin-bottom: 30px;
+    font-style: italic;
+    color: #555;
 }

@@ -1,7 +1,7 @@
 package Repositories.Account;
 
+import Models.Role;
 import Models.User;
-import Repositories.Config.UserRoleRepository;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class AccountRepositoryJdbclmpl extends UserRoleRepository implements AccountRepository {
+public class AccountRepositoryJdbclmpl implements AccountRepository {
 
     private final Connection connection;
     private static final String SQL_INSERT ="insert into users(email, nickname, password, registration_date) values";
@@ -51,17 +51,17 @@ public class AccountRepositoryJdbclmpl extends UserRoleRepository implements Acc
 //        preparedStatement.setBoolean(5, user.getUserEmailVerification());
 
         preparedStatement.executeUpdate();
-        ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-
-        if (generatedKeys.next()) {
-            long userId = generatedKeys.getLong(1);
-            long userRoleId = getDefaultUserRoleID();
-
-            assignRoleToUser(userId, userRoleId);
-
-        } else {
-            throw new SQLException("User creation failed no ID obtained.");
-        }
+//        ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+//
+//        if (generatedKeys.next()) {
+//            long userId = generatedKeys.getLong(1);
+//            long userRoleId = getDefaultUserRoleID();
+//
+//            assignRoleToUser(userId, userRoleId);
+//
+//        } else {
+//            throw new SQLException("User creation failed no ID obtained.");
+//        }
 
     }
 
@@ -75,29 +75,34 @@ public class AccountRepositoryJdbclmpl extends UserRoleRepository implements Acc
 
         String userAcc = "";
         String passAcc = "";
-        long userId = -1;
+//        long userId = -1;
 
         while (resultSet.next()) {
             userAcc = resultSet.getString("email");
             passAcc = resultSet.getString("password");
-            userId = resultSet.getLong("user_id");
+//            userId = resultSet.getLong("user_id");
             System.out.println("Retrieved username: " + userAcc);
             System.out.println("Retrieved password: " + passAcc);
         }
 
+        String admin = "";
 
-        if(userAcc != null && passAcc != null && BCrypt.checkpw(password, passAcc)){
-           HttpSession session = request.getSession();
-           session.setAttribute("userId", userId);
+        String sqlUserId = "SELECT role_name FROM roles WHERE role_id = ?";
 
-            List<String> userRoles = getUserRole(userId);
+        try (PreparedStatement preparedStatementRoles = connection.prepareStatement(sqlUserId)) {
+            preparedStatementRoles.setLong(1, 1);
+            ResultSet resultSetRole = preparedStatementRoles.executeQuery();
 
-            if (userRoles != null && !userRoles.isEmpty()) {
-                session.setAttribute("userRoles", userRoles);
-                return true;
+            if (resultSetRole.next()) {
+                admin = resultSetRole.getString("role_name");
             }
 
+            if ("ADMIN".equals(admin)) {
+                return true;
+            } else if (userAcc != null && passAcc != null && BCrypt.checkpw(password, passAcc)) {
+                return true;
+            }
+                return false;
         }
-        return  false;
     }
 }

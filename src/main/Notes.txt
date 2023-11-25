@@ -13,8 +13,22 @@ Trying to add the functionality of showing tasks according to the user
 Now I am able to create tasks with no issues
 But unfortunately can not show the tasks according to the user.
 
-----------------UPDATE 24.22.23--------------
+----------------UPDATE 24.11.23--------------
 Now I am storing hashed passwords in my database and am able to log in using them
 
 I tried to implement the Role Based Authentication using Spring Boot Security, now the webpage is running
 but I am not able to access the registration page. I shall solve it tomorrow.
+========================ALERT!!!========================================================================
+
+I just gave up on using Spring Boot Security, is stressing too much and giving issues to my app
+so let's stick to the servlets and filters.
+
+-------------------------------UPDATE 25.11.23-------------------------------------------
+I was able to implement the Role Based Authentication with Servlets.
+Now I have to make sure that an email is sent when the user signs up to activate the account
+-delete the account
+-update the account
+-show the tasks
+-delete the tasks
+-update the tasks as needed
+-and of course check the html and css to be finer

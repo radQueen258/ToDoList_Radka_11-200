@@ -5,28 +5,142 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/css/welcomePage.css">
   <title>Welcome to Our Page</title>
+
+  <style>
+    .overlay {
+
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      background-color: rgba(120, 25, 74, 0.8);
+      background-color: rgba(120,25,74, 1);
+      overflow-x: hidden;
+      transition: 0.5s;
+    }
+
+    /* Position the content inside the overlay */
+    .overlay-content {
+      position: relative;
+      top: 25%;
+      width: 100%;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    /* The navigation links inside the overlay */
+    .overlay a {
+      padding: 8px;
+      text-decoration: none;
+      font-size: 36px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+
+
+    .overlay a:hover, .overlay a:focus {
+      color: #f1f1f1;
+    }
+
+
+    .overlay .closebtn {
+      position: absolute;
+      top: 20px;
+      right: 45px;
+      font-size: 60px;
+    }
+
+
+    @media screen and (max-height: 450px) {
+      .overlay a {font-size: 20px}
+      .overlay .closebtn {
+        font-size: 40px;
+        top: 15px;
+        right: 35px;
+      }
+    }
+  </style>
+
+
 </head>
 <body>
+
+<!-- The overlay -->
+<div id="myNav" class="overlay">
+
+  <!-- Button to close the overlay navigation -->
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+  <!-- Overlay content -->
+  <div class="overlay-content">
+    <a href="/html/HomePage.html">Home</a>
+    <a href="/jsp/TasksListPage.jsp">Tasks</a>
+    <a href="/html/CreateTask.html">Create Task</a>
+    <a href="#">Delete Account</a>
+    <a href="/index.jsp">Logout</a>
+    <li><button id="deleteAccountBtn">Delete Account</button></li>
+  </div>
+
+</div>
 
 <div class="welcome-container">
   <div class="welcome-header">
     <h1>Welcome Back!</h1>
     <p>It's great to see you again.</p>
   </div>
-
-  <div class="logout-btn-container">
-    <a href="index.jsp" class="logout-btn">Logout</a>
+  <div class="quote">
+    <p>"Organizing your tasks is the key to productivity and success."</p>
   </div>
-
-  <div class="logout-btn-container">
-    <a href="/jsp/TasksListPage.jsp" class="logout-btn">To Do List</a>
-  </div>
-
-  <div class="logout-btn-container">
-    <a href="/html/CreateTask.html" class="logout-btn">New Task</a>
-  </div>
-
 </div>
+
+<span style="font-size:30px;cursor:pointer" onclick="openNav()">MENU</span>
+
+<script>
+  //Function to handle the menu appearance
+  function openNav() {
+    document.getElementById("myNav").style.width = "100%";
+  }
+
+  function closeNav() {
+    document.getElementById("myNav").style.width = "0%";
+  }
+
+  //-----------------------------------------------
+  // handling a request to delete the account with a token
+  document.getElementById('deleteAccountBtn').addEventListener('click', function() {
+    if (confirm('Are you sure you want to delete your account?')) {
+
+      const token = getTokenFromStorage(); // Implement this function to retrieve the token
+
+      // Make a DELETE request to the backend endpoint with the token
+      fetch('/delete', {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`, // Sending the token in the Authorization header
+          'Content-Type': 'application/json'
+
+        }
+      })
+              .then(response => {
+                if (response.ok) {
+                  // Account deleted successfully
+                  console.log('Account deleted successfully');
+                } else {
+                  // Error handling
+                  console.error('Error deleting account');
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+              });
+    }
+  });
+
+</script>
 
 </body>
 </html>
+

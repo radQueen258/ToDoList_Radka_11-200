@@ -12,7 +12,7 @@ public class AuthFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String url = ((HttpServletRequest) request).getRequestURI();
-        if ("/registration".equals(url)) {
+        if ("/signUp".equals(url)) {
             chain.doFilter(request, response); // Allow access to the registration page
             return;
         }

@@ -46,25 +46,24 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        String accountUserEmail = request.getParameter("email");
-//        String accountUserPassword = request.getParameter("password");
-//
-//        User user = User.builder()
-//                .UserEmail(accountUserEmail)
-//                .UserPassword(accountUserPassword)
-//                .build();
-//
-//        try {
-//
-//            if(accountRepository.login(accountUserEmail, accountUserPassword, user, request)) {
-//                response.sendRedirect("/home");
-//            }else {
-//                response.sendRedirect("/login?error=1");
-//            }
-//        } catch (SQLException e) {
-//
-//            throw new RuntimeException(e);
-//        }
-        response.sendRedirect(request.getContextPath() + "/home");
+        String accountUserEmail = request.getParameter("email");
+        String accountUserPassword = request.getParameter("password");
+
+        User user = User.builder()
+                .UserEmail(accountUserEmail)
+                .UserPassword(accountUserPassword)
+                .build();
+
+        try {
+
+            if(accountRepository.login(accountUserEmail, accountUserPassword, user, request)) {
+                response.sendRedirect("/home");
+            }else {
+                response.sendRedirect("/login?error=1");
+            }
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+        }
     }
 }
