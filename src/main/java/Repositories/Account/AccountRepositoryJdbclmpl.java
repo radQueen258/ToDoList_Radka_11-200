@@ -42,7 +42,7 @@ public class AccountRepositoryJdbclmpl implements AccountRepository {
     @Override
     public void save(User user) throws SQLException {
 
-        String sql = SQL_INSERT + "(?,?,?, CURRENT_DATE)";
+        String sql = SQL_INSERT + "(?,?,?, CURRENT_DATE) RETURNING user_id";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, user.getUserEmail());
         preparedStatement.setString(2, user.getUserNickname());
@@ -51,7 +51,12 @@ public class AccountRepositoryJdbclmpl implements AccountRepository {
 //        preparedStatement.setBoolean(5, user.getUserEmailVerification());
 
         preparedStatement.executeUpdate();
-//        ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+//ResultSet rs = preparedStatement.getResultSet();
+//if (rs.next()) {
+//     rs.getInt("user_id");
+//        }
+//        }
+        //        ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
 //
 //        if (generatedKeys.next()) {
 //            long userId = generatedKeys.getLong(1);

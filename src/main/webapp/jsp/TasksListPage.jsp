@@ -20,12 +20,12 @@
              <th >Deadline</th>
         </tr>
             <td>${user.nickname}</td>
-            <c:forEach items="${taskJsp}" var="task">--%>
+            <c:forEach items="${taskJsp}" var="task">
                 <tr>
-                    <td>${task.task_id}</td>
-                    <td>${task.task_name}</td>
-                    <td>${task.description}</td>
-                    <td>${task.deadline}</td>
+                    <td>${task.taskId}</td>
+                    <td>${task.taskName}</td>
+                    <td>${task.taskDescription}</td>
+                    <td>${task.taskDeadline}</td>
                 </tr>
             </c:forEach>
 

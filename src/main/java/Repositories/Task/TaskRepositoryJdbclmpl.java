@@ -12,7 +12,7 @@ public class TaskRepositoryJdbclmpl implements TaskRepository {
     private Statement statement;
 
     private static final String SQL_INSERT = "insert into tasks(user_id,task_name, description, deadline) values";
-    private static final String SQL_SELECT = "select task_id, task_name, description, deadline from tasks where user_id = ?";
+    private static final String SQL_SELECT = "select task_id,user_id, task_name, description, deadline from tasks where user_id = ?";
 
 //    private static final String SQL_SELECT_FROM_DRIVER = "select user_id,task_name, description, deadline from tasks";
 
@@ -46,11 +46,11 @@ public class TaskRepositoryJdbclmpl implements TaskRepository {
     public List findByUser (long userId) {
 
         try {
-           Statement statement1 = connection.createStatement();
-//            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT);
-//            preparedStatement.setLong(1,userId);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-            ResultSet resultSet = statement.executeQuery(SQL_SELECT);
+//           Statement statement1 = connection.createStatement();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT);
+            preparedStatement.setLong(1,userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+//            ResultSet resultSet = statement.executeQuery(SQL_SELECT);
 
             List<Task> userTasks = new ArrayList<>();
 

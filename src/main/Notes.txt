@@ -32,3 +32,9 @@ Now I have to make sure that an email is sent when the user signs up to activate
 -delete the tasks
 -update the tasks as needed
 -and of course check the html and css to be finer
+-------------------------------UPDATE 26.11.23------------------------------
+Well :) I was finally able to print the tasks according to the user but on the downside it seems
+that I need to implement the authentication control using Cookies and Session to make the app
+work better.
+
+I won't be doing this semestrovka for a day because I have other projects on Ruby to finish.

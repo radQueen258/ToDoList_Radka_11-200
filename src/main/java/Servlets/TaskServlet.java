@@ -51,13 +51,14 @@ public class TaskServlet extends HttpServlet {
     }
 
     public long getUserIDFromCurrentUser(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
         if (session != null && session.getAttribute("userId") != null) {
             return (long) session.getAttribute("userId");
         } else {
             // Handle the case where the user is not logged in or the user ID is not in the session
             return -1; // Or return any default value indicating no user ID
         }
+
     }
 
     @Override
