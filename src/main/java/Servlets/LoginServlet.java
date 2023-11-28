@@ -8,9 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.UUID;
 
 @WebServlet("/login")
@@ -21,6 +19,7 @@ public class LoginServlet extends HttpServlet {
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/ToDoList";
 
     AccountRepository accountRepository;
+    private  Connection connection;
 
     @Override
     public void init() throws ServletException {
@@ -31,7 +30,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         try {
-            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             accountRepository = new AccountRepositoryJdbclmpl(connection);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -82,10 +81,8 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accountUserEmail = request.getParameter("email");
         String accountUserPassword = request.getParameter("password");
-        long accountUserId = Long.parseLong(request.getParameter("user_id"));
 
         User user = User.builder()
-                .UserId(accountUserId)
                 .UserEmail(accountUserEmail)
                 .UserPassword(accountUserPassword)
                 .build();
@@ -93,6 +90,17 @@ public class LoginServlet extends HttpServlet {
         try {
 
             if(accountRepository.login(accountUserEmail, accountUserPassword, user, request)) {
+                long accountUserId = -1;
+                String sqlUserId = "SELECT user_id FROM users WHERE email = ?";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(sqlUserId)) {
+                    preparedStatement.setString(1, accountUserEmail);
+                    ResultSet resultSet = preparedStatement.executeQuery();
+
+                    if (resultSet.next()) {
+                        accountUserId = resultSet.getLong("user_id");
+                    }
+                }
+
                 HttpSession session = request.getSession();
                 session.setAttribute("userSessionId", accountUserId);
 

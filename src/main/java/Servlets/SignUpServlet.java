@@ -80,41 +80,20 @@ public class SignUpServlet extends HttpServlet {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
-    private void assignUserRole(long userId) throws SQLException {
-//        String sqlGetRoleId = "select role_id from roles where role_name = 'USER'";
-//        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlGetRoleId)){
-//            preparedStatement.setString(1,roleName);
-//            ResultSet resultSet = preparedStatement.executeQuery();
+//    private void assignUserRole(long userId) throws SQLException {
 //
-//            if(resultSet.next()) {
-//                Long roleId = resultSet.getLong("role_id");
-//                String sqlAssignRole = "insert into user_role (user_id, role_id value (?,)";
-//
-//                try {
-//                    PreparedStatement preparedStatementAssign = connection.prepareStatement(sqlAssignRole);
-//                    preparedStatementAssign.setLong(1, userId);
-//                    preparedStatementAssign.setLong(2,roleId);
-//                    preparedStatementAssign.executeUpdate();
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
+//        String sql = "INSERT INTO user_roles (user_id, role_id) VALUES (?,2)";
+//        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+//            preparedStatement.setLong(1, userId);
+//            preparedStatement.executeUpdate();
 //        }
-
-        String sql = "INSERT INTO user_roles (user_id, role_id) VALUES (?,2)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setLong(1, userId);
-            preparedStatement.executeUpdate();
-        }
-    }
+//    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accountUserEmail = request.getParameter("email");
         String accountUserPass = request.getParameter("password");
         String accountUserNickname = request.getParameter("nickname");
-//        System.out.println(accountUserEmail);
-//        System.out.println(accountUserNickname);
         String hashedPassword = hashPassword(accountUserPass);
 
 
@@ -139,11 +118,6 @@ public class SignUpServlet extends HttpServlet {
                     userId = resultSet.getLong("user_id"); // Retrieve the user_id
                 }
 
-
-//            long userId = -1;
-//            HttpSession session = request.getSession();
-//            session.setAttribute("userId", userId);
-//            System.out.println(userId);       \
 
                 String sql = "insert into user_roles (user_id, role_id) values (?, ?)";
                 try(PreparedStatement preparedStatement1 = connection.prepareStatement(sql)) {

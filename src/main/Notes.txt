@@ -41,3 +41,8 @@ I won't be doing this semestrovka for a day because I have other projects on Rub
 -------------------------------UPDATE 28.11.23---------------------------------------------
 I am back to it!
 Let's do this :)
+
+I added Session and Cookies for authentication.
+My user's taska by id are being printed but there is something wrong with the link.
+In the kink /jsp/TasksListPage.jsp there is nothing being printed but through the @WebeServlet("/taskByUser") it is
+being printed but I do not want to bore myself to solve it now.

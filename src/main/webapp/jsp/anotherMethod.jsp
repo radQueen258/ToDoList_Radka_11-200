@@ -1,38 +1,56 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: radqueen
-  Date: 24.11.2023
-  Time: 13:06
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="java.util.List" %>
+<%@ page import="Models.Task" %>
+<%@ page import="Models.User" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.Connection"%>
-
-<%
-    String id = request.getParameter("userid");
-    String driver = "org.postgresql.Driver";
-    String connectionUrl = "jdbc:postgresql://localhost:5432/ToDoList";
-    String database = "ToDoList";
-    String userid = "postgres";
-    String password = "postgres";
-
-    try {
-        Class.forName(driver);
-    } catch (ClassNotFoundException e) {
-        e.printStackTrace();
-    }
-    Connection connection = null;
-    Statement statement = null;
-    ResultSet resultSet = null;
-%>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Another Method</title>
+    <meta charset="UTF-8">
+    <title>To Do List</title>
+    <link rel="stylesheet" type="text/css" href="/css/ToDoList.css">
 </head>
 <body>
 
+<section class="vh-100 gradient-custom-2">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-12 col-xl-10">
+
+                <div class="card mask-custom">
+                    <div class="card-body p-4 text-white">
+
+                        <div class="text-center pt-3 pb-2">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-todo-list/check1.webp"
+                                 alt="Check" width="60">
+                            <h2 class="my-4">Task List</h2>
+                        </div>
+                           <table class="table text-white mb-0">
+                               <thead>
+                                    <tr>
+                                        <th scope="col">User Nickname</th>
+                                        <th scope="col">Task ID</th>
+                                        <th scope="col">Task Name</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Deadline</th>
+                                    </tr>
+                               </thead>
+                               <td>${user.nickname}</td>
+                               <c:forEach items="${taskJsp}" var="task">
+                                   <tr>
+                                       <td>${task.taskId}</td>
+                                       <td>${task.taskName}</td>
+                                       <td>${task.taskDescription}</td>
+                                       <td>${task.taskDeadline}</td>
+                                   </tr>
+                               </c:forEach>
+                           </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>
 </html>

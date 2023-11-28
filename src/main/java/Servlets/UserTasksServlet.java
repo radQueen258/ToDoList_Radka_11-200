@@ -49,7 +49,7 @@ public class UserTasksServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        long userId = (long) session.getAttribute("userId");
+        long userId = (long) session.getAttribute("userSessionId");
 
         List userTasks;
         try {

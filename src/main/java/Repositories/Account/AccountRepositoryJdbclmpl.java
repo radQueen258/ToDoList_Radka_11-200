@@ -25,20 +25,20 @@ public class AccountRepositoryJdbclmpl implements AccountRepository {
     }
 
 
-    @Override
-    public long getDefaultUserRoleID() throws SQLException {
-        String roleQuery = "select role_id from roles where role_name = 'USER' ";
-
-        try(PreparedStatement preparedStatement = connection.prepareStatement(roleQuery)) {
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getLong("role_id");
-                }
-            }
-        }
-
-        throw new SQLException("Default user role 'USER' not found.");
-    }
+//    @Override
+//    public long getDefaultUserRoleID() throws SQLException {
+//        String roleQuery = "select role_id from roles where role_name = 'USER' ";
+//
+//        try(PreparedStatement preparedStatement = connection.prepareStatement(roleQuery)) {
+//            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+//                if (resultSet.next()) {
+//                    return resultSet.getLong("role_id");
+//                }
+//            }
+//        }
+//
+//        throw new SQLException("Default user role 'USER' not found.");
+//    }
 
     @Override
     public void save(User user) throws SQLException {
@@ -52,22 +52,6 @@ public class AccountRepositoryJdbclmpl implements AccountRepository {
 //        preparedStatement.setBoolean(5, user.getUserEmailVerification());
 
         preparedStatement.executeUpdate();
-//ResultSet rs = preparedStatement.getResultSet();
-//if (rs.next()) {
-//     rs.getInt("user_id");
-//        }
-//        }
-        //        ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-//
-//        if (generatedKeys.next()) {
-//            long userId = generatedKeys.getLong(1);
-//            long userRoleId = getDefaultUserRoleID();
-//
-//            assignRoleToUser(userId, userRoleId);
-//
-//        } else {
-//            throw new SQLException("User creation failed no ID obtained.");
-//        }
 
     }
 
@@ -81,12 +65,11 @@ public class AccountRepositoryJdbclmpl implements AccountRepository {
 
         String userAcc = "";
         String passAcc = "";
-//        long userId = -1;
 
         while (resultSet.next()) {
             userAcc = resultSet.getString("email");
             passAcc = resultSet.getString("password");
-//            userId = resultSet.getLong("user_id");
+
             System.out.println("Retrieved username: " + userAcc);
             System.out.println("Retrieved password: " + passAcc);
         }

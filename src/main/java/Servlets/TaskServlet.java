@@ -52,8 +52,8 @@ public class TaskServlet extends HttpServlet {
 
     public long getUserIDFromCurrentUser(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        if (session != null && session.getAttribute("userId") != null) {
-            return (long) session.getAttribute("userId");
+        if (session != null && session.getAttribute("userSessionId") != null) {
+            return (long) session.getAttribute("userSessionId");
         } else {
             // Handle the case where the user is not logged in or the user ID is not in the session
             return -1; // Or return any default value indicating no user ID
@@ -69,23 +69,10 @@ public class TaskServlet extends HttpServlet {
         long TaskUserId = getUserIDFromCurrentUser(request);
 
 
-        System.out.println(TaskDeadline1);
-        System.out.println(TaskName);
-        System.out.println(TaskDescription);
-        System.out.println(TaskUserId);
-
-//        java.sql.Date TaskDeadline2 = null;
-//
-//
-//            try {
-//                SimpleDateFormat inputDateFormat = new SimpleDateFormat("MM-dd-yy");
-//                java.util.Date parsedDate = inputDateFormat.parse(TaskDeadline1);
-//                if (parsedDate != null) {
-//                    TaskDeadline2 = new java.sql.Date(parsedDate.getTime());
-//                }
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
+//        System.out.println(TaskDeadline1);
+//        System.out.println(TaskName);
+//        System.out.println(TaskDescription);
+//        System.out.println(TaskUserId);
 
 
         Task task = Task.builder()
