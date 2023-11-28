@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 public class AccountRepositoryJdbclmpl implements AccountRepository {
 
@@ -109,5 +110,47 @@ public class AccountRepositoryJdbclmpl implements AccountRepository {
             }
                 return false;
         }
+    }
+
+    @Override
+    public boolean findUUID(UUID uuid) throws SQLException {
+        String sql = "select count(*) from users_uuid where UUID = ?";
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setObject(1, uuid);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if(resultSet.next()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public UUID addUUID(String email, User user) throws SQLException {
+        String sqlUser = "select user_id from users where email = ?";
+        String insertSqlUuid = "insert into users_uuid(user_id, uuid) values (?,?)";
+
+        UUID uuid = UUID.randomUUID();
+
+        PreparedStatement preparedStatementUser = connection.prepareStatement(sqlUser);
+        PreparedStatement preparedStatementUuid = connection.prepareStatement(insertSqlUuid);
+
+        preparedStatementUser.setString(1, user.getUserEmail());
+        int user_id = 0;
+        ResultSet resultSetUser = preparedStatementUser.executeQuery();
+
+        if (resultSetUser.next()) {
+            user_id = resultSetUser.getInt("user_id");
+        } else {
+            throw new SQLException("User not found");
+        }
+
+        preparedStatementUuid.setInt(1, user_id);
+        preparedStatementUuid.setObject(2, uuid);
+        preparedStatementUuid.executeUpdate();
+
+        return uuid;
     }
 }

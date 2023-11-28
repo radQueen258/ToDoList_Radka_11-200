@@ -38,3 +38,6 @@ that I need to implement the authentication control using Cookies and Session to
 work better.
 
 I won't be doing this semestrovka for a day because I have other projects on Ruby to finish.
+-------------------------------UPDATE 28.11.23---------------------------------------------
+I am back to it!
+Let's do this :)

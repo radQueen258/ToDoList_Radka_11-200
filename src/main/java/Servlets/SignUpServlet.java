@@ -7,12 +7,10 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.*;
+import java.util.UUID;
 
 @WebServlet("/signUp")
 public class SignUpServlet extends HttpServlet {
@@ -24,8 +22,8 @@ public class SignUpServlet extends HttpServlet {
     private AccountRepository accountRepository;
     private Connection connection;
 
-    public SignUpServlet() throws SQLException {
-    }
+//    public SignUpServlet() throws SQLException {
+//    }
 
     @Override
     public void init() throws ServletException {
@@ -45,6 +43,36 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            response.sendRedirect("/home");
+            return;
+        }
+
+        Cookie[] cookies = request.getCookies();
+        UUID userUUID = null;
+
+        if (cookies != null) {
+            for (Cookie cookie :  cookies) {
+                if ("user_id".equals(cookie.getName())) {
+                    userUUID = UUID.fromString(cookie.getValue());
+                    break;
+                }
+            }
+        }
+
+        if (userUUID != null) {
+            try {
+                if (accountRepository.findUUID(userUUID)) {
+                    response.sendRedirect("/home");
+                    return;
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         request.getRequestDispatcher("/html/SignUpPage.html").forward(request, response);
     }
 

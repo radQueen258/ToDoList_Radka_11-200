@@ -6,14 +6,12 @@ import Repositories.Account.AccountRepositoryJdbclmpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.UUID;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -42,6 +40,41 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+
+
+        if (session != null) {
+            String userId = (String) session.getAttribute("userSessionId");
+
+            if (userId != null) {
+                response.sendRedirect("/home");
+                return;
+            }
+        }
+
+        Cookie[] cookies = request.getCookies();
+        UUID userUUID = null;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("user_id".equals(cookie.getName())) {
+                    userUUID = UUID.fromString(cookie.getValue());
+                    break;
+                }
+            }
+        }
+
+        if (userUUID != null) {
+            try {
+                if (accountRepository.findUUID(userUUID)) {
+                    response.sendRedirect("/home");
+                    return;
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         request.getRequestDispatcher("/html/LoginPage.html").forward(request, response);
     }
 
@@ -49,8 +82,10 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String accountUserEmail = request.getParameter("email");
         String accountUserPassword = request.getParameter("password");
+        long accountUserId = Long.parseLong(request.getParameter("user_id"));
 
         User user = User.builder()
+                .UserId(accountUserId)
                 .UserEmail(accountUserEmail)
                 .UserPassword(accountUserPassword)
                 .build();
@@ -59,9 +94,15 @@ public class LoginServlet extends HttpServlet {
 
             if(accountRepository.login(accountUserEmail, accountUserPassword, user, request)) {
                 HttpSession session = request.getSession();
-                session.setAttribute("userId", 11L);
+                session.setAttribute("userSessionId", accountUserId);
+
+                Cookie sessionCookie = new Cookie("user_id", accountRepository.addUUID(accountUserEmail, user).toString());
+                sessionCookie.setMaxAge(60 * 60);
+                response.addCookie(sessionCookie);
+
                 response.sendRedirect("/home");
             }else {
+                System.out.println("Login failed. Redirecting to /login?error=1");
                 response.sendRedirect("/login?error=1");
             }
         } catch (SQLException e) {
