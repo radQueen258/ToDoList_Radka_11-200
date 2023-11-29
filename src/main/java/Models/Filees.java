@@ -11,7 +11,7 @@ import java.sql.Date;
 @Setter
 @EqualsAndHashCode
 @Builder
-public class File {
+public class Filees {
     private long FileId;
     private String FileName;
     private String FileType;

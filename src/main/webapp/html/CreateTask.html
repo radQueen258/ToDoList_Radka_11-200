@@ -42,7 +42,7 @@
 </head>
 <body>
 
-<form action="/task" method="post" >
+<form id="taskForm" action="/task" method="post">
   <div class="task-details">
     <h1>New Task</h1>
     <hr>
@@ -56,13 +56,63 @@
         <label for="taskDeadline">Deadline:</label>
         <input type="date" id="taskDeadline" name="deadline" required>
 
-        <label for="fileUpload">Upload File:</label>
-        <input type="file" id="fileUpload" name="fileUpload">
-
-      <input type="submit" value="Submit Task">
+         <input type="submit" value="Submit Task">
 
   </div>
 </form>
 
+<form id="uploadForm" method="post" action="/upload" enctype="multipart/form-data">
+    <label for="file">Upload File:</label>
+    <input type="file" id="file" name="file">
+</form>
+
+<!--<input id="submitAllForms" type="submit" value="Submit Task">-->
+<button id="submitAllForms">Create Task with Upload</button>
+
 </body>
 </html>
+
+
+<script>
+    document.getElementById('submitAllForms').addEventListener('click', function() {
+        // Get form data
+        var uploadFormData = new FormData(document.getElementById('uploadForm'));
+        var taskFormData = new FormData(document.getElementById('taskForm'));
+
+        // Append uploadForm data to taskForm
+        for (var pair of uploadFormData.entries()) {
+            taskFormData.append(pair[0], pair[1]);
+        }
+
+        // Submit both forms
+        fetch('/upload', {
+            method: 'POST',
+            body: uploadFormData
+        }).then(response => {
+            // Handle response if needed
+            console.log('File uploaded');
+            return response.json(); // if server returns JSON
+        }).then(data => {
+            // Get the file information from the server if needed
+            console.log('Server response:', data);
+        }).catch(error => {
+            // Handle error if needed
+            console.error('Error uploading file:', error);
+        });
+
+        fetch('/task', {
+            method: 'POST',
+            body: taskFormData
+        }).then(response => {
+            // Handle response if needed
+            console.log('Task created');
+            return response.json(); // if server returns JSON
+        }).then(data => {
+            // Get the task information from the server if needed
+            console.log('Server response:', data);
+        }).catch(error => {
+            // Handle error if needed
+            console.error('Error creating task:', error);
+        });
+    });
+</script>

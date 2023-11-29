@@ -1,10 +1,10 @@
 package Repositories.File;
 
-import Models.File;
+import Models.Filees;
 
 import java.sql.SQLException;
 
 public interface FileRepository {
 
-    void saveFile(File file) throws SQLException;
+    void saveFile(Filees file) throws SQLException;
 }

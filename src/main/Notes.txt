@@ -43,6 +43,10 @@ I am back to it!
 Let's do this :)
 
 I added Session and Cookies for authentication.
-My user's taska by id are being printed but there is something wrong with the link.
+My user's tasks by id are being printed but there is something wrong with the link.
 In the kink /jsp/TasksListPage.jsp there is nothing being printed but through the @WebeServlet("/taskByUser") it is
-being printed but I do not want to bore myself to solve it now.
+being printed, but I do not want to bore myself to solve it now.
+------------------------UPDATE 29.11.23--------------------------------------
+I am trying to upload the file and the task at the same time but it seems that not even javascript is helping me
+with this.
+This is stressing me so much because I do not want to make a separate page for file upload!!!

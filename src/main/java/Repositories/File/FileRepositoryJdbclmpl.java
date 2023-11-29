@@ -1,6 +1,6 @@
 package Repositories.File;
 
-import Models.File;
+import Models.Filees;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,14 +16,13 @@ public class FileRepositoryJdbclmpl implements FileRepository{
     }
 
     @Override
-    public void saveFile(File file) throws SQLException {
+    public void saveFile(Filees file) throws SQLException {
 
-        String sql = SQL_INSERT + "(?,?,?,?)";
+        String sql = SQL_INSERT + "(?,?,?, CURRENT_DATE)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, file.getFileName());
         preparedStatement.setString(2, file.getFileType());
         preparedStatement.setString(3, file.getFileContent());
-        preparedStatement.setDate(4, file.getFileUploadDate());
 
         preparedStatement.executeUpdate();
         System.out.println("File Executed");

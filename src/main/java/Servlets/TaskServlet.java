@@ -6,25 +6,29 @@ import Repositories.Task.TaskRepository;
 import Repositories.Task.TaskRepositoryJdbclmpl;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
+import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 @WebServlet("/task")
+@MultipartConfig
+//        (fileSizeThreshold = 1024 * 1024 * 2, //2MB
+//        maxFileSize =  1024 * 1024 * 10, //10MB
+//        maxRequestSize = 1024 * 1024 * 50 ) //50MB
 public class TaskServlet extends HttpServlet {
 
     private static final String DB_USER = "postgres";
     private static final String DB_PASSWORD = "postgres";
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/ToDoList";
+
+    private Connection connection;
 
     private TaskRepository taskRepository;
 
@@ -36,7 +40,7 @@ public class TaskServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
         try {
-            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             taskRepository = new TaskRepositoryJdbclmpl(connection);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -61,6 +65,8 @@ public class TaskServlet extends HttpServlet {
 
     }
 
+
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String TaskName = request.getParameter("task_name");
@@ -74,6 +80,36 @@ public class TaskServlet extends HttpServlet {
 //        System.out.println(TaskDescription);
 //        System.out.println(TaskUserId);
 
+//        Part filePart = request.getPart("file");
+//        String fileName = "";
+//        byte[] fileContent = null;
+//
+//        if (filePart != null && filePart.getSize() > 0) {
+//            String uploadPath = "/mnt/Radqueen/Projects Java/ToDoList_Radka_11-200/src/main/java/SavedFiles";
+////            fileName = extractFileName(filePart);
+//            fileName = filePart.getSubmittedFileName() + " ";
+//            String fileType = filePart.getContentType();
+//
+//            String filePath = uploadPath + File.separator + fileName;
+//            filePart.write(filePath);
+//
+//            fileContent = Files.readAllBytes(Paths.get(filePath));
+//
+//            try {
+//
+//                String sql = "insert into files (file_name, file_type, file_content, upload_content) values (?,?,?, CURRENT_DATE)";
+//                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+//                preparedStatement.setString(1, fileName);
+//                preparedStatement.setString(2, fileType);
+//                preparedStatement.setBytes(3, fileContent);
+//                preparedStatement.executeUpdate();
+//
+//            } catch (SQLException e) {
+//                throw new RuntimeException(e);
+//            }
+//
+//            Files.deleteIfExists(Paths.get(filePath));
+//        }
 
         Task task = Task.builder()
                 .UserId(TaskUserId)
