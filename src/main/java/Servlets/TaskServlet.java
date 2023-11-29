@@ -18,10 +18,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 @WebServlet("/task")
-@MultipartConfig
-//        (fileSizeThreshold = 1024 * 1024 * 2, //2MB
-//        maxFileSize =  1024 * 1024 * 10, //10MB
-//        maxRequestSize = 1024 * 1024 * 50 ) //50MB
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, //2MB
+        maxFileSize =  1024 * 1024 * 10, //10MB
+        maxRequestSize = 1024 * 1024 * 50 ) //50MB
 public class TaskServlet extends HttpServlet {
 
     private static final String DB_USER = "postgres";
@@ -78,38 +77,39 @@ public class TaskServlet extends HttpServlet {
 //        System.out.println(TaskDeadline1);
 //        System.out.println(TaskName);
 //        System.out.println(TaskDescription);
-//        System.out.println(TaskUserId);
+        System.out.println(TaskUserId);
 
-//        Part filePart = request.getPart("file");
-//        String fileName = "";
-//        byte[] fileContent = null;
-//
-//        if (filePart != null && filePart.getSize() > 0) {
-//            String uploadPath = "/mnt/Radqueen/Projects Java/ToDoList_Radka_11-200/src/main/java/SavedFiles";
-////            fileName = extractFileName(filePart);
-//            fileName = filePart.getSubmittedFileName() + " ";
-//            String fileType = filePart.getContentType();
-//
-//            String filePath = uploadPath + File.separator + fileName;
-//            filePart.write(filePath);
-//
-//            fileContent = Files.readAllBytes(Paths.get(filePath));
-//
-//            try {
-//
-//                String sql = "insert into files (file_name, file_type, file_content, upload_content) values (?,?,?, CURRENT_DATE)";
-//                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-//                preparedStatement.setString(1, fileName);
-//                preparedStatement.setString(2, fileType);
-//                preparedStatement.setBytes(3, fileContent);
-//                preparedStatement.executeUpdate();
-//
-//            } catch (SQLException e) {
-//                throw new RuntimeException(e);
-//            }
-//
-//            Files.deleteIfExists(Paths.get(filePath));
-//        }
+        Part filePart = request.getPart("file");
+        String fileName = "";
+        byte[] fileContent = null;
+
+        if (filePart != null && filePart.getSize() > 0) {
+            String uploadPath = "/mnt/Radqueen/Projects Java/ToDoList_Radka_11-200/src/main/java/SavedFiles";
+//            fileName = extractFileName(filePart);
+            fileName = filePart.getSubmittedFileName() + " ";
+            String fileType = filePart.getContentType();
+
+            String filePath = uploadPath + File.separator + fileName;
+            filePart.write(filePath);
+
+            fileContent = Files.readAllBytes(Paths.get(filePath));
+
+            try {
+
+                String sql = "insert into files (user_id, file_name, file_type, file_content, upload_date) values (?,?,?,?, CURRENT_DATE)";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setLong(1, TaskUserId);
+                preparedStatement.setString(2, fileName);
+                preparedStatement.setString(3, fileType);
+                preparedStatement.setBytes(4, fileContent);
+                preparedStatement.executeUpdate();
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+            Files.deleteIfExists(Paths.get(filePath));
+        }
 
         Task task = Task.builder()
                 .UserId(TaskUserId)

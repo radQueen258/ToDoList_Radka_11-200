@@ -1,35 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>New Task</title>-->
-<!--  <link rel="stylesheet" type="text/css" href="/css/CreateTask.css">-->
-<!--</head>-->
-<!--<body>-->
-<!--<form action="/task" method="post" enctype="multipart/form-data">-->
-<!--<div class="task-details">-->
-<!--  <h2>Task Details</h2>-->
-
-<!--    <label >Task Name:</label>-->
-<!--    <input type="text" id="taskName" placeholder="Task Name" name="task_name" required>-->
-
-<!--    <label for="taskDescription">Task Description:</label>-->
-<!--    <textarea id="taskDescription" placeholder="Your Task Description" name="description" rows="4" required></textarea>-->
-
-<!--    <label for="taskDeadline">Deadline:</label>-->
-<!--    <input type="date" id="taskDeadline" name="deadline" required>-->
-
-<!--    <label for="fileUpload">Upload File:</label>-->
-<!--    <input type="file" id="fileUpload" name="fileUpload">-->
-
-<!--    <input type="submit" value="Submit Task">-->
-
-<!--</div>-->
-<!--</form>-->
-<!--</body>-->
-<!--</html>-->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,77 +10,89 @@
 </head>
 <body>
 
-<form id="taskForm" action="/task" method="post">
+<form id="taskForm" action="/task" method="POST" enctype="multipart/form-data">
   <div class="task-details">
     <h1>New Task</h1>
     <hr>
+        <div class="form-group">
+            <label >Task Name:</label>
+            <input type="text" id="taskName" placeholder="Task Name" name="task_name" required>
+        </div>
 
-        <label >Task Name:</label>
-        <input type="text" id="taskName" placeholder="Task Name" name="task_name" required>
+         <div class="form-group">
+          <label for="taskDescription">Task Description:</label>
+          <textarea id="taskDescription" placeholder="Your Task Description" name="description" rows="4" required></textarea>
+         </div>
 
-        <label for="taskDescription">Task Description:</label>
-        <textarea id="taskDescription" placeholder="Your Task Description" name="description" rows="4" required></textarea>
+         <div class="form-group">
+          <label for="taskDeadline">Deadline:</label>
+          <input type="date" id="taskDeadline" name="deadline" required>
+         </div>
 
-        <label for="taskDeadline">Deadline:</label>
-        <input type="date" id="taskDeadline" name="deadline" required>
+         <div class="form-group mt-3">
+          <label for="file">Upload File:</label>
+          <input type="file" id="file" name="file">
+         </div>
 
-         <input type="submit" value="Submit Task">
+<!--      <form id="uploadForm" method="post" action="/task" enctype="multipart/form-data">-->
+<!--         -->
+<!--      </form>-->
+
+         <input type="submit" value="Submit Task" class="btn-btn-primary">
 
   </div>
 </form>
 
-<form id="uploadForm" method="post" action="/upload" enctype="multipart/form-data">
-    <label for="file">Upload File:</label>
-    <input type="file" id="file" name="file">
-</form>
+
 
 <!--<input id="submitAllForms" type="submit" value="Submit Task">-->
-<button id="submitAllForms">Create Task with Upload</button>
+<!--<button type="submit" id="submitAllForms">Create Task with Upload</button>-->
+
+<!--<script>-->
+<!--    document.getElementById('submitAllForms').addEventListener('click', function() {-->
+<!--        // Get form data-->
+<!--        var uploadFormData = new FormData(document.getElementById('uploadForm'));-->
+<!--        var taskFormData = new FormData(document.getElementById('taskForm'));-->
+
+<!--        // Append uploadForm data to taskForm-->
+<!--        for (var pair of uploadFormData.entries()) {-->
+<!--            taskFormData.append(pair[0], pair[1]);-->
+<!--        }-->
+
+<!--        // Submit both forms-->
+<!--        fetch('/upload', {-->
+<!--            method: 'POST',-->
+<!--            body: uploadFormData-->
+<!--        }).then(response => {-->
+<!--            // Handle response if needed-->
+<!--            console.log('File uploaded');-->
+<!--            return response.json(); // if server returns JSON-->
+<!--        }).then(data => {-->
+<!--            // Get the file information from the server if needed-->
+<!--            console.log('Server response:', data);-->
+<!--        }).catch(error => {-->
+<!--            // Handle error if needed-->
+<!--            console.error('Error uploading file:', error);-->
+<!--        });-->
+
+<!--        fetch('/task', {-->
+<!--            method: 'POST',-->
+<!--            body: taskFormData-->
+<!--        }).then(response => {-->
+<!--            // Handle response if needed-->
+<!--            console.log('Task created');-->
+<!--            return response.json(); // if server returns JSON-->
+<!--        }).then(data => {-->
+<!--            // Get the task information from the server if needed-->
+<!--            console.log('Server response:', data);-->
+<!--        }).catch(error => {-->
+<!--            // Handle error if needed-->
+<!--            console.error('Error creating task:', error);-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
 
 </body>
 </html>
 
 
-<script>
-    document.getElementById('submitAllForms').addEventListener('click', function() {
-        // Get form data
-        var uploadFormData = new FormData(document.getElementById('uploadForm'));
-        var taskFormData = new FormData(document.getElementById('taskForm'));
-
-        // Append uploadForm data to taskForm
-        for (var pair of uploadFormData.entries()) {
-            taskFormData.append(pair[0], pair[1]);
-        }
-
-        // Submit both forms
-        fetch('/upload', {
-            method: 'POST',
-            body: uploadFormData
-        }).then(response => {
-            // Handle response if needed
-            console.log('File uploaded');
-            return response.json(); // if server returns JSON
-        }).then(data => {
-            // Get the file information from the server if needed
-            console.log('Server response:', data);
-        }).catch(error => {
-            // Handle error if needed
-            console.error('Error uploading file:', error);
-        });
-
-        fetch('/task', {
-            method: 'POST',
-            body: taskFormData
-        }).then(response => {
-            // Handle response if needed
-            console.log('Task created');
-            return response.json(); // if server returns JSON
-        }).then(data => {
-            // Get the task information from the server if needed
-            console.log('Server response:', data);
-        }).catch(error => {
-            // Handle error if needed
-            console.error('Error creating task:', error);
-        });
-    });
-</script>

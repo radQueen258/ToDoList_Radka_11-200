@@ -50,3 +50,5 @@ being printed, but I do not want to bore myself to solve it now.
 I am trying to upload the file and the task at the same time but it seems that not even javascript is helping me
 with this.
 This is stressing me so much because I do not want to make a separate page for file upload!!!
+
+This is SOOOO satisfying to write, the code that I wrote 5h ago started working all of the sudden kkk.
