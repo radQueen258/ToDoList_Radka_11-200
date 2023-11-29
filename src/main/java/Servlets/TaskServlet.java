@@ -85,7 +85,6 @@ public class TaskServlet extends HttpServlet {
 
         if (filePart != null && filePart.getSize() > 0) {
             String uploadPath = "/mnt/Radqueen/Projects Java/ToDoList_Radka_11-200/src/main/java/SavedFiles";
-//            fileName = extractFileName(filePart);
             fileName = filePart.getSubmittedFileName() + " ";
             String fileType = filePart.getContentType();
 
