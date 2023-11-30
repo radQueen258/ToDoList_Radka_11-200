@@ -101,8 +101,9 @@ public class LoginServlet extends HttpServlet {
                     }
                 }
 
-                HttpSession session = request.getSession();
+                HttpSession session = request.getSession(true);
                 session.setAttribute("userSessionId", accountUserId);
+                session.setAttribute("authenticated", true);
 
                 Cookie sessionCookie = new Cookie("user_id", accountRepository.addUUID(accountUserEmail, user).toString());
                 sessionCookie.setMaxAge(60 * 60);

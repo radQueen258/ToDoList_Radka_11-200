@@ -80,8 +80,11 @@
     <a href="/jsp/TasksListPage.jsp">Tasks</a>
     <a href="/html/CreateTask.html">Create Task</a>
     <a href="#">Delete Account</a>
-    <a href="/index.jsp">Logout</a>
-    <li><button id="deleteAccountBtn">Delete Account</button></li>
+    <form id="logoutForm" action="/logout" method="GET">
+      <button type="submit">Logout</button>
+    </form>
+<!--    <a href="/html/LoginPage.html" id="logoutLink">Logout</a>-->
+<!--    <li><button id="deleteAccountBtn">Delete Account</button></li>-->
   </div>
 
 </div>
@@ -110,33 +113,58 @@
 
   //-----------------------------------------------
   // handling a request to delete the account with a token
-  document.getElementById('deleteAccountBtn').addEventListener('click', function() {
-    if (confirm('Are you sure you want to delete your account?')) {
+  // document.getElementById('deleteAccountBtn').addEventListener('click', function() {
+  //   if (confirm('Are you sure you want to delete your account?')) {
+  //
+  //     const token = getTokenFromStorage(); // Implement this function to retrieve the token
+  //
+  //     // Make a DELETE request to the backend endpoint with the token
+  //     fetch('/delete', {
+  //       method: 'DELETE',
+  //       headers: {
+  //         'Authorization': `Bearer ${token}`, // Sending the token in the Authorization header
+  //         'Content-Type': 'application/json'
+  //
+  //       }
+  //     })
+  //             .then(response => {
+  //               if (response.ok) {
+  //                 // Account deleted successfully
+  //                 console.log('Account deleted successfully');
+  //               } else {
+  //                 // Error handling
+  //                 console.error('Error deleting account');
+  //               }
+  //             })
+  //             .catch(error => {
+  //               console.error('Error:', error);
+  //             });
+  //   }
+  // });
 
-      const token = getTokenFromStorage(); // Implement this function to retrieve the token
 
-      // Make a DELETE request to the backend endpoint with the token
-      fetch('/delete', {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`, // Sending the token in the Authorization header
-          'Content-Type': 'application/json'
 
-        }
-      })
-              .then(response => {
-                if (response.ok) {
-                  // Account deleted successfully
-                  console.log('Account deleted successfully');
-                } else {
-                  // Error handling
-                  console.error('Error deleting account');
-                }
-              })
-              .catch(error => {
-                console.error('Error:', error);
-              });
-    }
+//   =====================LOGOUT FUNCTIONALITY=========================
+
+  document.getElementById('logoutLink').addEventListener('click', function (event) {
+    event.preventDefault();
+
+    fetch('/logout', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+            .then(response => {
+              if (response.ok) {
+                window.location.href = 'LoginPage.html';
+              } else {
+                console.error('Logout failed')
+              }
+            })
+            .catch(error => {
+              console.error('Error during logout:', error);
+            });
   });
 
 </script>
