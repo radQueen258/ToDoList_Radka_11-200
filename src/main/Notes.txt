@@ -52,3 +52,8 @@ with this.
 This is stressing me so much because I do not want to make a separate page for file upload!!!
 
 This is SOOOO satisfying to write, the code that I wrote 5h ago started working all of the sudden kkk.
+
+-------------------------UPDATE 30.11.23--------------------------------
+Honestly this project is taking the sanity out of me, I tried to implement the Filters but it did not work well
+Now I decided to implement the Context Listener but it is giving me error to initiate the database
+I still have a lot to do and other subjects to look into, maybe tomorrow I will take a look into Ruby instead of Java.

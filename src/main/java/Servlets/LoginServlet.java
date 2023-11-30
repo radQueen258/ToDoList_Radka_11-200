@@ -4,9 +4,11 @@ import Models.User;
 import Repositories.Account.AccountRepository;
 import Repositories.Account.AccountRepositoryJdbclmpl;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.*;
 import java.util.UUID;
@@ -19,22 +21,24 @@ public class LoginServlet extends HttpServlet {
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/ToDoList";
 
     AccountRepository accountRepository;
-    private  Connection connection;
+    private DataSource dataSource;
+//    private  Connection connection;
 
     @Override
-    public void init() throws ServletException {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            accountRepository = new AccountRepositoryJdbclmpl(connection);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public void init(ServletConfig config) throws ServletException {
+        accountRepository = (AccountRepository) config.getServletContext().getAttribute("accountRep");
+//        try {
+//            Class.forName("org.postgresql.Driver");
+//        } catch (ClassNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        try {
+//            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+//            accountRepository = new AccountRepositoryJdbclmpl(connection);
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     @Override
@@ -92,6 +96,7 @@ public class LoginServlet extends HttpServlet {
             if(accountRepository.login(accountUserEmail, accountUserPassword, user, request)) {
                 long accountUserId = -1;
                 String sqlUserId = "SELECT user_id FROM users WHERE email = ?";
+                Connection connection = dataSource.getConnection();
                 try (PreparedStatement preparedStatement = connection.prepareStatement(sqlUserId)) {
                     preparedStatement.setString(1, accountUserEmail);
                     ResultSet resultSet = preparedStatement.executeQuery();
@@ -101,9 +106,9 @@ public class LoginServlet extends HttpServlet {
                     }
                 }
 
-                HttpSession session = request.getSession(true);
+                HttpSession session = request.getSession(); //there was a 'true'
                 session.setAttribute("userSessionId", accountUserId);
-                session.setAttribute("authenticated", true);
+//                session.setAttribute("authenticated", true);
 
                 Cookie sessionCookie = new Cookie("user_id", accountRepository.addUUID(accountUserEmail, user).toString());
                 sessionCookie.setMaxAge(60 * 60);
