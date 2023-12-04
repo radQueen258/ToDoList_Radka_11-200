@@ -29,6 +29,10 @@ public class TaskRepositoryJdbclmpl implements TaskRepository {
         this.statement = statement;
     }
 
+    public TaskRepositoryJdbclmpl() {
+
+    }
+
     @Override
     public void saveTask(Task task) throws SQLException {
         String sql = SQL_INSERT + "(?,?,?,?)";
@@ -72,6 +76,40 @@ public class TaskRepositoryJdbclmpl implements TaskRepository {
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    public boolean deleteTaskById(long taskId) {
+        boolean deleted = false;
+
+        try {
+            String sqlDelete = "DELETE FROM tasks WHERE task_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlDelete);
+            preparedStatement.setLong(1,taskId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            deleted = rowsAffected > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return deleted;
+    }
+
+    @Override
+    public boolean markTaskAsFinished(long taskId) {
+        boolean updated = false;
+
+        try {
+            String sqlUpdate = "UPDATE tasks SET status = 'finished' WHERE task_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate);
+            preparedStatement.setLong(1, taskId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            updated = rowsAffected > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return updated;
     }
 
 //    @Override

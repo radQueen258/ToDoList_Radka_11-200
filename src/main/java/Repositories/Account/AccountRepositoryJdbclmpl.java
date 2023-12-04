@@ -17,19 +17,19 @@ import java.util.UUID;
 
 public class AccountRepositoryJdbclmpl implements AccountRepository {
 
-//    private final Connection connection;
+    private final Connection connection;
 
-    private DataSource dataSource;
+//    private DataSource dataSource;
     private static final String SQL_INSERT ="insert into users(email, nickname, password, registration_date) values";
 
-//    public AccountRepositoryJdbclmpl(Connection connection) {
-//        super();
-//        this.connection = connection;
-//    }
-
-    public AccountRepositoryJdbclmpl(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public AccountRepositoryJdbclmpl(Connection connection) {
+        super();
+        this.connection = connection;
     }
+
+//    public AccountRepositoryJdbclmpl(DataSource dataSource) {
+//        this.dataSource = dataSource;
+//    }
 
 
 //    @Override
@@ -51,7 +51,7 @@ public class AccountRepositoryJdbclmpl implements AccountRepository {
     public void save(User user) throws SQLException {
 
         String sql = SQL_INSERT + "(?,?,?, CURRENT_DATE)";
-        Connection connection = dataSource.getConnection();
+//        Connection connection = dataSource.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, user.getUserEmail());
         preparedStatement.setString(2, user.getUserNickname());
@@ -67,7 +67,7 @@ public class AccountRepositoryJdbclmpl implements AccountRepository {
     public boolean login(String email, String password, User user, HttpServletRequest request) throws SQLException {
 
         String sql = "SELECT user_id, email, password FROM users WHERE email = ?";
-        Connection connection = dataSource.getConnection();
+//        Connection connection = dataSource.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, user.getUserEmail());
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -107,7 +107,7 @@ public class AccountRepositoryJdbclmpl implements AccountRepository {
     @Override
     public boolean findUUID(UUID uuid) throws SQLException {
         String sql = "select count(*) from users_uuid where UUID = ?";
-        Connection connection = dataSource.getConnection();
+//        Connection connection = dataSource.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setObject(1, uuid);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -123,7 +123,7 @@ public class AccountRepositoryJdbclmpl implements AccountRepository {
     public UUID addUUID(String email, User user) throws SQLException {
         String sqlUser = "select user_id from users where email = ?";
         String insertSqlUuid = "insert into users_uuid(user_id, uuid) values (?,?)";
-        Connection connection = dataSource.getConnection();
+//        Connection connection = dataSource.getConnection();
 
         UUID uuid = UUID.randomUUID();
 

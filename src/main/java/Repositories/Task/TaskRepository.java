@@ -9,5 +9,8 @@ public interface TaskRepository {
     void saveTask (Task task) throws SQLException;
     List findByUser(long userId);
 
+    boolean deleteTaskById(long taskId);
+    boolean markTaskAsFinished(long taskId);
+
 //    List findAll();
 }

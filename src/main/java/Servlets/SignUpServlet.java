@@ -2,6 +2,7 @@ package Servlets;
 
 import Models.User;
 import Repositories.Account.AccountRepository;
+import Repositories.Account.AccountRepositoryJdbclmpl;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletConfig;
@@ -16,37 +17,37 @@ import java.util.UUID;
 @WebServlet("/signUp")
 public class SignUpServlet extends HttpServlet {
 
-//    private static final String DB_USER = "postgres";
-//    private static final String DB_PASSWORD = "postgres";
-//    private static final String DB_URL = "jdbc:postgresql://localhost:5432/ToDoList";
+    private static final String DB_USER = "postgres";
+    private static final String DB_PASSWORD = "postgres";
+    private static final String DB_URL = "jdbc:postgresql://localhost:5432/ToDoList";
 
     private AccountRepository accountRepository;
-    private DataSource dataSource;
+//    private DataSource dataSource;
+//
+//    public SignUpServlet(DataSource dataSource) {
+//        this.dataSource = dataSource;
+//    }
 
-    public SignUpServlet(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-//    private Connection connection;
+    private Connection connection;
 
 //    public SignUpServlet() throws SQLException {
 //    }
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        accountRepository = (AccountRepository) config.getServletContext().getAttribute("accountRep");
-//        try {
-//            Class.forName("org.postgresql.Driver");
-//
-//        } catch (ClassNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//        try {
-//            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        accountRepository = new AccountRepositoryJdbclmpl(connection);
+//        accountRepository = (AccountRepository) config.getServletContext().getAttribute("accountRep");
+        try {
+            Class.forName("org.postgresql.Driver");
+
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        accountRepository = new AccountRepositoryJdbclmpl(connection);
     }
 
     @Override
@@ -117,7 +118,7 @@ public class SignUpServlet extends HttpServlet {
             accountRepository.save(user);
 
             String sqlUserId = "SELECT user_id FROM users WHERE email = ?";
-            Connection connection = dataSource.getConnection();
+//            Connection connection = dataSource.getConnection();
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(sqlUserId)) {
                 preparedStatement.setString(1, accountUserEmail);

@@ -21,24 +21,24 @@ public class LoginServlet extends HttpServlet {
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/ToDoList";
 
     AccountRepository accountRepository;
-    private DataSource dataSource;
-//    private  Connection connection;
+//    private DataSource dataSource;
+    private  Connection connection;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        accountRepository = (AccountRepository) config.getServletContext().getAttribute("accountRep");
-//        try {
-//            Class.forName("org.postgresql.Driver");
-//        } catch (ClassNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        try {
-//            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-//            accountRepository = new AccountRepositoryJdbclmpl(connection);
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
+//        accountRepository = (AccountRepository) config.getServletContext().getAttribute("accountRep");
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            accountRepository = new AccountRepositoryJdbclmpl(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -96,7 +96,7 @@ public class LoginServlet extends HttpServlet {
             if(accountRepository.login(accountUserEmail, accountUserPassword, user, request)) {
                 long accountUserId = -1;
                 String sqlUserId = "SELECT user_id FROM users WHERE email = ?";
-                Connection connection = dataSource.getConnection();
+//                Connection connection = dataSource.getConnection();
                 try (PreparedStatement preparedStatement = connection.prepareStatement(sqlUserId)) {
                     preparedStatement.setString(1, accountUserEmail);
                     ResultSet resultSet = preparedStatement.executeQuery();

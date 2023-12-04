@@ -110,20 +110,29 @@ public class TaskServlet extends HttpServlet {
             Files.deleteIfExists(Paths.get(filePath));
         }
 
-        Task task = Task.builder()
-                .UserId(TaskUserId)
-                .TaskName(TaskName)
-                .TaskDescription(TaskDescription)
-                .TaskDeadline(Date.valueOf(TaskDeadline1))
-                .build();
+        Date taskDeadline = Date.valueOf(TaskDeadline1);
+        Date currentDate = new Date(System.currentTimeMillis());
+
+        if (taskDeadline.before(currentDate)) {
+            response.sendRedirect("/task?error=invalidDeadline");
+            return;
+        } else {
+
+            Task task = Task.builder()
+                    .UserId(TaskUserId)
+                    .TaskName(TaskName)
+                    .TaskDescription(TaskDescription)
+                    .TaskDeadline(Date.valueOf(TaskDeadline1))
+                    .build();
 
 
-        try {
-            taskRepository.saveTask(task);
-            response.sendRedirect("/savedTask");
-        } catch (SQLException e) {
-            response.sendRedirect("/home");
-            throw new RuntimeException(e);
+            try {
+                taskRepository.saveTask(task);
+                response.sendRedirect("/taskByUser");
+            } catch (SQLException e) {
+                response.sendRedirect("/home");
+                throw new RuntimeException(e);
+            }
         }
     }
 }
