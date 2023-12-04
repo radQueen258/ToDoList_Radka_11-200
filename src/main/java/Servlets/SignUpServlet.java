@@ -30,8 +30,6 @@ public class SignUpServlet extends HttpServlet {
 
     private Connection connection;
 
-//    public SignUpServlet() throws SQLException {
-//    }
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -82,21 +80,13 @@ public class SignUpServlet extends HttpServlet {
             }
         }
 
-        request.getRequestDispatcher("/html/SignUpPage.html").forward(request, response);
+        request.getRequestDispatcher("/jsp/SignUpPage.jsp").forward(request, response);
     }
 
     public static String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
-//    private void assignUserRole(long userId) throws SQLException {
-//
-//        String sql = "INSERT INTO user_roles (user_id, role_id) VALUES (?,2)";
-//        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-//            preparedStatement.setLong(1, userId);
-//            preparedStatement.executeUpdate();
-//        }
-//    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

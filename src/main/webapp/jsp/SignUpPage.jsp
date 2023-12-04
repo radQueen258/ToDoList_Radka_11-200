@@ -32,7 +32,7 @@
       <button type="button" class="cancelbtn">Cancel</button>
       <button type="submit" class="signupbtn">Sign Up</button>
       <br>
-      <span class="acc">Already have <a href="/html/LoginPage.html">an account</a>?</span>
+      <span class="acc">Already have <a href="/jsp/LoginPage.jsp">an account</a>?</span>
     </div>
   </div>
 </form>

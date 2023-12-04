@@ -2,10 +2,7 @@ package Repositories.User;
 
 import Models.User;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,18 +11,21 @@ public class UserRepositoryJdbclmpl implements UserRepository{
     private Connection connection;
     private Statement statement;
 
-    private static final String SQL_SELECT_FROM_DRIVER = "select user_id, email, password, nickname, registration_date from Users";
+    private static final String SQL_SELECT_FROM_DRIVER = "select user_id, email, password, nickname, registration_date from users where user_id = ?";
 
     public UserRepositoryJdbclmpl (Connection connection, Statement statement) {
         this.connection = connection;
         this.statement = statement;
     }
 
+
+
     @Override
-    public List findAll() {
+    public List findById(long userId) {
         try {
-            Statement statement1 = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SQL_SELECT_FROM_DRIVER);
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_FROM_DRIVER);
+            preparedStatement.setLong(1,userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
             List<User> result = new ArrayList<>();
 
             while (resultSet.next()) {

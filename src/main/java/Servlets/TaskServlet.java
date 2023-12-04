@@ -48,7 +48,7 @@ public class TaskServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/html/CreateTask.html").forward(request,response);
+        request.getRequestDispatcher("/html/CreateTask.jsp").forward(request,response);
 
 
     }

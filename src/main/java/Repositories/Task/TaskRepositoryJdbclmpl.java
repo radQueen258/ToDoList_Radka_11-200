@@ -20,9 +20,9 @@ public class TaskRepositoryJdbclmpl implements TaskRepository {
         this.connection = connection;
     }
 
-    public TaskRepositoryJdbclmpl(Statement statement) {
-        this.statement = statement;
-    }
+//    public TaskRepositoryJdbclmpl(Statement statement) {
+//        this.statement = statement;
+//    }
 
     public TaskRepositoryJdbclmpl(Connection connection, Statement statement) {
         this.connection = connection;

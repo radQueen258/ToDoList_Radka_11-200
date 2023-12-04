@@ -78,7 +78,7 @@ public class LoginServlet extends HttpServlet {
             }
         }
 
-        request.getRequestDispatcher("/html/LoginPage.html").forward(request, response);
+        request.getRequestDispatcher("/jsp/LoginPage.jsp").forward(request, response);
     }
 
     @Override

@@ -12,8 +12,8 @@
     </div>
 
     <div class="buttons">
-        <a href="/html/LoginPage.html" class="login-btn">Login</a>
-        <a href="/html/SignUpPage.html" class="register-btn">Register</a>
+        <a href="/jsp/LoginPage.jsp" class="login-btn">Login</a>
+        <a href="/jsp/SignUpPage.jsp" class="register-btn">Register</a>
     </div>
 </div>
 

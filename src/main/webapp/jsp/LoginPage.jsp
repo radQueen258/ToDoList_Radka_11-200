@@ -28,7 +28,7 @@
         <button type="button" class="cancelbtn">Cancel</button>
         <span class="psw">Forgot <a href="?">password</a>?</span>
         <br>
-        <span class="noacc">Don't have <a href="/html/SignUpPage.html">an account</a>?</span>
+        <span class="noacc">Don't have <a href="/jsp/SignUpPage.jsp">an account</a>?</span>
     </div>
 </form>
 </body>

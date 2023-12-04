@@ -4,5 +4,7 @@ import java.util.List;
 
 public interface UserRepository {
 
-    List findAll();
+    List findById(long userId);
+
+
 }
